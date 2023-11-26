@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  # Frontend service
+  frontend:
+    build:
+      context: ./client
+      target: builder
+    image: your-frontend-image-name
+    container_name: your-frontend-container
+    restart: always
+    ports:
+      - "80:80"
+
+  # Backend service
+  backend:
+    build: ./server
+    image: your-backend-image-name
+    container_name: your-backend-container
+    restart: always
+    ports:
+      - "8080:8080"

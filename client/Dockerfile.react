@@ -1,0 +1,25 @@
+# Build Stage
+FROM node:18.15.0 as builder
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build
+
+# Production Stage
+FROM nginx:1.21
+
+# Set working directory explicitly (optional)
+WORKDIR /usr/share/nginx/html
+
+# Copy the build output from the builder stage to the nginx web root
+COPY --from=builder /app/build .
+
+# Expose port 80 (optional)
+EXPOSE 80
+
+# Use ENTRYPOINT instead of CMD
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
